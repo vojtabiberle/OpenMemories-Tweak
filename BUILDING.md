@@ -13,6 +13,7 @@ Verified locally:
 
 - Java/Android build works with Gradle 4.10.3 and JDK 8.
 - Android native build works with Android NDK r14b.
+- Full native build works with Linaro `arm-linux-gnueabi` GCC 4.9.4 from `4.9-2017.01`.
 - NDK r16 is too new for this project:
   - it treats `android-9` as unsupported and uses `android-14`
   - that breaks the old Android 2.3 `adbd` sources, starting with missing `prop_msg`
@@ -21,10 +22,12 @@ Verified locally:
   - `libadbd.so`: Android executable renamed to a library, built by NDK r14b
   - `libprotectiontweak.so`: GNU/Linux ARM executable renamed to a library, not built by Android NDK
 
-Still required for a full native build:
+The full native build requires:
 
 - Linaro `arm-linux-gnueabi` GCC 4.9.4 from `4.9-2017.01`
-- The command names `arm-linux-gnueabi-gcc` and `arm-linux-gnueabi-g++` must be on `PATH`
+- Android NDK r14b
+- JDK 8
+- Gradle 4.10.3
 
 The upstream build file points at:
 
@@ -38,7 +41,13 @@ Expected archive name:
 gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabi.tar.xz
 ```
 
-At the time this note was written, `releases.linaro.org` was not reachable from the local environment, so the Linaro step is documented but not yet automated end-to-end.
+Verified archive MD5:
+
+```text
+7d409a976ac5bb68fe52b9c1dc503734
+```
+
+The setup script uses Armbian mirror fallbacks because `releases.linaro.org` is not reliably reachable.
 
 ## One-Time Setup
 
@@ -46,23 +55,16 @@ From this repository:
 
 ```sh
 scripts/setup-ndk-r14b.sh
+scripts/setup-linaro-gnueabi.sh
 ```
 
-This downloads Android NDK r14b from Google into `../android-build` and verifies the archive checksum.
+These download Android NDK r14b and the Linaro `arm-linux-gnueabi` toolchain into `../android-build` and verify archive checksums.
 
-Then install or unpack the Linaro `arm-linux-gnueabi` toolchain and put its `bin` directory on `PATH`.
-
-Example:
+Optional check:
 
 ```sh
-export PATH="$PWD/../android-build/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabi/bin:$PATH"
-```
-
-Check:
-
-```sh
-arm-linux-gnueabi-gcc --version
-arm-linux-gnueabi-g++ --version
+../android-build/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-gcc --version
+../android-build/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabi/bin/arm-linux-gnueabi-g++ --version
 ```
 
 ## Full Legacy Build
@@ -77,7 +79,7 @@ This build requires:
 - Gradle 4.10.3 at `../android-build/gradle-4.10.3`
 - Android SDK at `../android-build/android-sdk`
 - Android NDK r14b at `../android-build/android-ndk-r14b`
-- Linaro `arm-linux-gnueabi` GCC on `PATH`
+- Linaro `arm-linux-gnueabi` GCC at `../android-build/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabi`
 
 Expected native outputs in the APK:
 

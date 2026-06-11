@@ -3,14 +3,13 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TOOLS_DIR="$(cd "$ROOT/.." && pwd)/android-build"
+LINARO_DIR="$TOOLS_DIR/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabi"
 
-for cmd in arm-linux-gnueabi-gcc arm-linux-gnueabi-g++; do
-  if ! command -v "$cmd" >/dev/null 2>&1; then
-    echo "Missing $cmd on PATH." >&2
-    echo "Install/unpack Linaro gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabi and prepend its bin directory." >&2
-    exit 1
-  fi
-done
+if [ ! -d "$LINARO_DIR" ]; then
+  "$ROOT/scripts/setup-linaro-gnueabi.sh"
+fi
+
+export PATH="$LINARO_DIR/bin:$PATH"
 
 if [ ! -d "$TOOLS_DIR/android-ndk-r14b" ]; then
   "$ROOT/scripts/setup-ndk-r14b.sh"
