@@ -8,6 +8,9 @@ An app to unlock settings on your Sony camera.
 ## Installation
 Please read [this section](https://github.com/ma1co/Sony-PMCA-RE#installing-android-apps) for up-to-date information on installing the app.
 
+## Building
+See [BUILDING.md](BUILDING.md) for the pinned legacy build setup and current native toolchain status.
+
 ## Compatibility
 This app should be compatible with all Sony cameras supporting PlayMemories Camera Apps (PMCA). See [here](https://github.com/ma1co/OpenMemories-Framework/blob/master/docs/Cameras.md) for a full list.
 
