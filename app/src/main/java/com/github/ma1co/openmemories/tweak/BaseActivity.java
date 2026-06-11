@@ -9,6 +9,7 @@ public class BaseActivity extends Activity {
     protected void onResume() {
         super.onResume();
         Logger.info("onResume", getComponentName().getShortClassName());
+        notifyAppInfo();
     }
 
     @Override
@@ -21,9 +22,15 @@ public class BaseActivity extends Activity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_MENU) {
             finish();
-            startActivity(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    private void notifyAppInfo() {
+        Intent intent = new Intent("com.android.server.DAConnectionManagerService.AppInfoReceive");
+        intent.putExtra("package_name", getComponentName().getPackageName());
+        intent.putExtra("class_name", getComponentName().getClassName());
+        sendBroadcast(intent);
     }
 }
