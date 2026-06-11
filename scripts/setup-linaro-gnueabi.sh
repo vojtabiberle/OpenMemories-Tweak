@@ -6,6 +6,7 @@ TOOLS_DIR="$(cd "$ROOT/.." && pwd)/android-build"
 DOWNLOADS="$TOOLS_DIR/downloads"
 ARCHIVE_NAME="gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabi.tar.xz"
 ARCHIVE="$DOWNLOADS/$ARCHIVE_NAME"
+VENDORED_ARCHIVE="$ROOT/third_party/toolchains/$ARCHIVE_NAME"
 TOOLCHAIN_DIR="$TOOLS_DIR/${ARCHIVE_NAME%.tar.xz}"
 MD5="7d409a976ac5bb68fe52b9c1dc503734"
 
@@ -21,14 +22,18 @@ URLS=(
 mkdir -p "$DOWNLOADS"
 
 if [ ! -f "$ARCHIVE" ]; then
-  for url in "${URLS[@]}"; do
-    echo "Downloading $ARCHIVE_NAME from $url"
-    if curl -L --fail --show-error --progress-bar -o "$ARCHIVE.tmp" "$url"; then
-      mv "$ARCHIVE.tmp" "$ARCHIVE"
-      break
-    fi
-    rm -f "$ARCHIVE.tmp"
-  done
+  if [ -f "$VENDORED_ARCHIVE" ]; then
+    cp "$VENDORED_ARCHIVE" "$ARCHIVE"
+  else
+    for url in "${URLS[@]}"; do
+      echo "Downloading $ARCHIVE_NAME from $url"
+      if curl -L --fail --show-error --progress-bar -o "$ARCHIVE.tmp" "$url"; then
+        mv "$ARCHIVE.tmp" "$ARCHIVE"
+        break
+      fi
+      rm -f "$ARCHIVE.tmp"
+    done
+  fi
 fi
 
 if [ ! -f "$ARCHIVE" ]; then

@@ -47,7 +47,13 @@ Verified archive MD5:
 7d409a976ac5bb68fe52b9c1dc503734
 ```
 
-The setup script uses Armbian mirror fallbacks because `releases.linaro.org` is not reliably reachable.
+This fork vendors the compressed Linaro archive at:
+
+```text
+third_party/toolchains/gcc-linaro-4.9.4-2017.01-x86_64_arm-linux-gnueabi.tar.xz
+```
+
+The setup script uses the vendored archive first. Armbian mirrors are kept as fallback URLs because `releases.linaro.org` is not reliably reachable.
 
 ## One-Time Setup
 
