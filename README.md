@@ -5,11 +5,32 @@ An app to unlock settings on your Sony camera.
 * Disable the NTSC nag screen
 * For developers: Enable telnet and adb daemons
 
+## HX90V lifecycle fork
+This branch carries HX90V-tested lifecycle and build fixes on top of upstream OpenMemories: Tweak.
+
+Current HX90V tag: `v0.11-hx90v.1`
+
+Confirmed on Sony DSC-HX90V, firmware version 1:
+
+* The app starts normally.
+* The menu button exits the app without restarting the camera.
+* "Unlock protected settings" remains checked after restart.
+
+No additional hidden HX90V menu entries were found during testing.
+
+This fork also vendors the legacy Linaro `arm-linux-gnueabi` toolchain archive required for the native `protectiontweak` build. See [BUILDING.md](BUILDING.md).
+
 ## Installation
 Please read [this section](https://github.com/ma1co/Sony-PMCA-RE#installing-android-apps) for up-to-date information on installing the app.
 
 ## Building
 See [BUILDING.md](BUILDING.md) for the pinned legacy build setup and current native toolchain status.
+
+Verified fork build output:
+
+```text
+app/build/outputs/apk/debug/app-debug.apk
+```
 
 ## Compatibility
 This app should be compatible with all Sony cameras supporting PlayMemories Camera Apps (PMCA). See [here](https://github.com/ma1co/OpenMemories-Framework/blob/master/docs/Cameras.md) for a full list.
